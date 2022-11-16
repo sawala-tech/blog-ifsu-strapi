@@ -1,0 +1,30 @@
+{
+  "kind": "singleType",
+  "collectionName": "contacts",
+  "info": {
+    "singularName": "contact",
+    "pluralName": "contacts",
+    "displayName": "contact"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "facebook": {
+      "type": "string"
+    },
+    "instagram": {
+      "type": "string"
+    },
+    "twitter": {
+      "type": "string"
+    },
+    "github": {
+      "type": "string"
+    },
+    "dribbble": {
+      "type": "string"
+    }
+  }
+}
