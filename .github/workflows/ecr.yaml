@@ -46,7 +46,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ${{ steps.login-ecr.outputs.registry }}/${{ github.event.repository.name }}
+          images: ${{ steps.login-ecr.outputs.registry }}/f5z4i4i9/${{ github.event.repository.name }}
           tags: |
             type=semver,pattern={{version}}
             type=raw,value=latest
@@ -57,7 +57,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-          cache-from: type=registry,ref=${{ steps.login-ecr.outputs.registry }}/${{ github.event.repository.name }}:latest
+          cache-from: type=registry,ref=${{ steps.login-ecr.outputs.registry }}/f5z4i4i9/${{ github.event.repository.name }}:latest
           cache-to: type=inline
 
   update-helm-chart:
