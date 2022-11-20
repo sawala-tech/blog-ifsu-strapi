@@ -1,10 +1,10 @@
 # Default values for chart.
 replicaCount: 1
 image:
-  repository: 674178471750.dkr.ecr.ap-southeast-1.amazonaws.com/core-qm-strapi
+  repository: public.ecr.aws/f5z4i4i9/blog-ifsu-strapi
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "0.1.54"
+  tag: "0.0.1-beta.4"
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
