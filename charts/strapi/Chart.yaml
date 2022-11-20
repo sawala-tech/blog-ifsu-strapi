@@ -1,0 +1,16 @@
+apiVersion: v2
+name: blog-ifsu-strapi
+version: 0.0.1
+appVersion: "0.0.1"
+description: Sawala strapi helm chart template
+type: application
+keywords:
+  - helm
+  - strapi
+home: https://github.com/sawala-tech/blog-ifsu-strapi
+icon: https://avatars.githubusercontent.com/u/55946411?s=400&u=8432806982197bd8f45336f154c2dd3b494db5b8&v=4
+sources:
+  - https://github.com/sawala-tech/blog-ifsu-strapi
+maintainers:
+  - name: Andri Junaedi
+    email: andri@sawala.tech
