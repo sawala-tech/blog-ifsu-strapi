@@ -1,0 +1,133 @@
+# Default values for chart.
+replicaCount: 1
+image:
+  repository: 674178471750.dkr.ecr.ap-southeast-1.amazonaws.com/core-qm-strapi
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "0.1.54"
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+podAnnotations: {}
+# |
+# app.kubernetes.io/name: app-example
+# or
+# app.kubernetes.io/name: app-example
+
+vault:
+  enabled: false
+  role: ""
+  secret: ""
+  template:
+    vault.hashicorp.com/agent-inject-template-config.env: |
+      {{ with secret "secret/template" -}}
+      {{ range $key, $value := .Data.data }}
+        export {{ $key }}={{ $value }}
+      {{ end }}
+      {{- end }}
+  database:
+    enabled: false
+    secret: ""
+    template:
+      vault.hashicorp.com/agent-inject-template-database.env: |
+        {{- with secret "database/creds/strapi-helm-template" -}}
+          export DATABASE_USERNAME={{ .Data.username }}
+          export DATABASE_PASSWORD={{ .Data.password }}
+        {{- end -}}
+  aws:
+    enabled: false
+    secret: ""
+    template:
+      vault.hashicorp.com/agent-inject-template-aws.env: |
+        {{- with secret "aws/creds/strapi-helm-template" -}}
+          export AWS_ACCESS_KEY_ID={{ .Data.access_key }}
+          export AWS_ACCESS_SECRET={{ .Data.secret_key }}
+        {{- end -}}
+  extraTemplates: {}
+  # |
+  # vault.hashicorp.com/agent-inject-secret-database.env: database/creds/example
+  # vault.hashicorp.com/agent-inject-template-database.env: |
+  #   {{- with secret "database/creds/kelasna-api" -}}
+  #     export DATABASE_USERNAME={{ .Data.username }}
+  #     export DATABASE_PASSWORD={{ .Data.password }}
+  #   {{- end -}}
+
+  extraArgs:
+    - /bin/bash
+    - "-c"
+    - source <(cat /vault/secrets/*.env) && yarn start
+    # or orverride the default template
+    # |
+    # - /bin/bash
+    # - '-c'
+    # - source <(cat /vault/secrets/config) && yarn start
+podSecurityContext: {}
+# fsGroup: 2000
+
+securityContext: {}
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+
+service:
+  type: ClusterIP
+  externalPort: 1337
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  # Usimg Cloudflare DNS, you can use the following annotations:
+  # kubernetes.io/ingress.class: nginx
+  # cert-manager.io/issuer: cloudflare-issuer
+  # cert-manager.io/issuer-kind: OriginIssuer
+  # cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
+  # external-dns.beta.kubernetes.io/hostname: chart-example.local
+  # external-dns.beta.kubernetes.io/cloudflare-proxied: "true"
+
+  # Using anoyher DNS & cerbot, you can use yhe following annotations:
+  # kubernetes.io/ingress.class: nginx
+  # cert-manager.io/cluster-issuer: letsencrypt-prod
+  pathType: Prefix
+  hosts:
+    - host: chart-example.local
+      paths: []
+  ## Extra paths to prepend to the host configuration. This is useful when working with annotation based services.
+  extraPaths: []
+  # - path: /*
+  #   backend:
+  #     service:
+  #       name: ssl-redirect
+  #       port:
+  #         number: use-annotation
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+## Pod resource requests & limits
+resources:
+  requests:
+    cpu: 100m
+    memory: 250Mi
+  limits:
+    cpu: 500m
+    memory: 250Mi
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+nodeSelector: {}
+tolerations: []
+affinity: {}
