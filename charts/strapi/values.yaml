@@ -4,7 +4,7 @@ image:
   repository: public.ecr.aws/f5z4i4i9/blog-ifsu-strapi
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "0.0.1-beta.4"
+  tag: "0.0.2"
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
